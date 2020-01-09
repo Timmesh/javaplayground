@@ -20,6 +20,6 @@ export class ServersComponent implements OnInit {
 
   reload() {
     // This will navigate with the relative path from this route
-    // this.router.navigate(['servers'], { relativeTo: this.route });
+    this.router.navigate(['/servers', 2, 'edit'], { queryParams: { allowEdit: 1 }, fragment: 'loading' });
   }
 }
