@@ -18,7 +18,10 @@ const appRoutes: Routes = [
         ]
     },
     {
-        path: 'servers', canActivate: [AuthGuard], component: ServersComponent,
+        path: 'servers',
+        // canActivate: [AuthGuard], 
+        canActivateChild: [AuthGuard],
+        component: ServersComponent,
         children: [
             { path: ':id', component: ServerComponent },
             { path: ':id/edit', component: EditServerComponent }
