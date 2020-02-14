@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import {
     HttpClient,
 } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-
+import { map, catchError, tap } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
 import { Post } from './post.model';
 
 
 @Injectable({ providedIn: 'root' }) // CAn also be added in providers in app module
 export class PostsService {
+
+    error = new Subject<string>();
 
     constructor(private http: HttpClient) { }
 
@@ -22,6 +24,9 @@ export class PostsService {
             )
             .subscribe(responseData => {
                 console.log(responseData);
+            },
+            error => {
+              this.error.next(error.message);
             });
     }
 
@@ -39,6 +44,10 @@ export class PostsService {
                         }
                     }
                     return postsArray;
+                }),
+                catchError(errorRes => {
+                  // Send to analytics server
+                  return throwError(errorRes);
                 })
             );
     }
