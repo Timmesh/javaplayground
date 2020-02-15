@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import {
     HttpClient,
+    HttpHeaders
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
@@ -33,7 +34,10 @@ export class PostsService {
     fetchPosts() {
         return this.http
             .get<{ [key: string]: Post }>(
-                'https://ng-complete-guide-c56d3.firebaseio.com/posts.json'
+                'https://ng-complete-guide-c56d3.firebaseio.com/posts.json',
+                {
+                  headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+                }
             )
             .pipe(
                 map(responseData => {
