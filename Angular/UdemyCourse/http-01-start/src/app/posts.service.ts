@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import {
     HttpClient,
-    HttpHeaders
+    HttpHeaders,
+    HttpParams
 } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
@@ -26,17 +27,21 @@ export class PostsService {
             .subscribe(responseData => {
                 console.log(responseData);
             },
-            error => {
-              this.error.next(error.message);
-            });
+                error => {
+                    this.error.next(error.message);
+                });
     }
 
     fetchPosts() {
+        let searchParams = new HttpParams();
+        searchParams = searchParams.append('print', 'pretty');
+        searchParams = searchParams.append('custom', 'key');
         return this.http
             .get<{ [key: string]: Post }>(
                 'https://ng-complete-guide-c56d3.firebaseio.com/posts.json',
                 {
-                  headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+                    headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+                    params: searchParams,
                 }
             )
             .pipe(
@@ -50,14 +55,14 @@ export class PostsService {
                     return postsArray;
                 }),
                 catchError(errorRes => {
-                  // Send to analytics server
-                  return throwError(errorRes);
+                    // Send to analytics server
+                    return throwError(errorRes);
                 })
             );
     }
 
     deletePosts() {
-       return this.http
-        .delete('https://ng-complete-guide-c56d3.firebaseio.com/posts.json');
+        return this.http
+            .delete('https://ng-complete-guide-c56d3.firebaseio.com/posts.json');
     }
 }
