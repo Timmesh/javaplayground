@@ -7,10 +7,14 @@ describe('HeroComponent (shallow tests)', () => {
   let fixture: ComponentFixture<HeroComponent>;
 
   beforeEach(() => {
+    // importing a routing module isn't straight forward
+    // routerLink in our template shouldn't be live, we don't want it to actually try to route anywhere throughout our tests
+
     // need to be careful with this though as it can hide other issues, for instance, if we mistype element names/attributes
     // look to heroes component shallow tests for a better way to handle this
     TestBed.configureTestingModule({
       declarations: [ HeroComponent ],
+      schemas: [NO_ERRORS_SCHEMA] // tells angular that for this module, don't fail if you encounter an unknown element or attribute
     });
 
     fixture = TestBed.createComponent(HeroComponent);
