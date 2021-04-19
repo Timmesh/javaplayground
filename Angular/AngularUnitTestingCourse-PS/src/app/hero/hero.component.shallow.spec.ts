@@ -35,5 +35,9 @@ describe('HeroComponent (shallow tests)', () => {
     // these two examples do the exact same thing, but in two different ways
     // nativeElement is a regular DOM element
     expect(fixture.nativeElement.querySelector('a').textContent).toContain('Spider Dude');
+
+    // debugElement is more like a wrapper around the nativeElement, more similar to jQuery
+    // also exposes additional elements that we might need(for instance if the component has a directive on it)
+    expect(fixture.debugElement.query(By.css('a')).nativeElement.textContent).toContain('Spider Dude');
   });
 });
