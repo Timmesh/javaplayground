@@ -26,4 +26,14 @@ describe('HeroComponent (shallow tests)', () => {
     expect(fixture.componentInstance.hero.name).toEqual('Spider Dude');
   });
 
+  it('should render the hero name in an anchor tag', () => {
+    fixture.componentInstance.hero = { id: 1, name: 'Spider Dude', strength: 3 };
+    // The below bindings do not get updated until change detection runs.
+    // So we need change detection to execute
+    fixture.detectChanges();
+
+    // these two examples do the exact same thing, but in two different ways
+    // nativeElement is a regular DOM element
+    expect(fixture.nativeElement.querySelector('a').textContent).toContain('Spider Dude');
+  });
 });
