@@ -6,6 +6,8 @@ import { NO_ERRORS_SCHEMA, Directive, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
+
+
 describe('HeroesComponent (deep tests)', () => {
   let fixture: ComponentFixture<HeroesComponent>;
   let mockHeroService;
@@ -78,5 +80,15 @@ describe('HeroesComponent (deep tests)', () => {
     expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
   });
 
- 
+  it('should call heroService.deleteHero when the Hero Component\'s delete button is clicked v3', () => {
+    spyOn(fixture.componentInstance, 'delete');
+    fixture.detectChanges();
+
+    const heroComponentsDebugElements = fixture.debugElement.queryAll(By.directive(HeroComponent));
+    heroComponentsDebugElements[0].triggerEventHandler('delete', undefined);
+
+    expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[0]);
+  });
+
+  
 });
