@@ -6,7 +6,18 @@ import { NO_ERRORS_SCHEMA, Directive, Input } from '@angular/core';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
+@Directive({
+  selector: '[routerLink]',
+  host: { '(click)': 'onClick()' }
+})
+export class RouterLinkDirectiveStub {
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null;
 
+  onClick() {
+    this.navigatedTo = this.linkParams;
+  }
+}
 
 describe('HeroesComponent (deep tests)', () => {
   let fixture: ComponentFixture<HeroesComponent>;
@@ -26,6 +37,7 @@ describe('HeroesComponent (deep tests)', () => {
       declarations: [
         HeroesComponent,
         HeroComponent,
+        RouterLinkDirectiveStub
       ],
       providers: [
         { provide: HeroService, useValue: mockHeroService }
@@ -104,4 +116,15 @@ describe('HeroesComponent (deep tests)', () => {
     expect(fixture.debugElement.query(By.css('ul')).nativeElement.textContent).toContain(name);
   });
 
+  it('should have the correct route for the first hero', () => {
+    fixture.detectChanges();
+    const heroComponents = fixture.debugElement.queryAll(By.directive(HeroComponent));
+
+    const routerLink = heroComponents[0].query(By.directive(RouterLinkDirectiveStub))
+                                      .injector
+                                      .get(RouterLinkDirectiveStub);
+    heroComponents[0].query(By.css('a')).triggerEventHandler('click', undefined);
+
+    expect(routerLink.navigatedTo).toBe(`/detail/${HEROES[0].id}`);
+  });
 });
