@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+Adding BootStrap
+  $ npm install --save bootstrap
+
+48. Creating the Components
+Creating New Components:
+   $ ng g c receipes --skipTests true
+   $ ng g c receipes/receipe-list --skipTests true
+   $ ng g c receipes/receipe-detail --skipTests true
+   $ ng g c receipes/receipe-list/receipe-item --skipTests true
+
+   $ ng g c shopping-list --skipTests true
+   $ ng g c shopping-list/shopping-edit --skipTests true
+
+
