@@ -18,8 +18,4 @@ export class ReceipeListComponent implements OnInit {
   ngOnInit() {
     this.receipes = this.receipeService.getRecepies();
   }
-
-  onReceipeSelected(receipe: Receipe) {
-    this.receipeSelected.emit(receipe);
-  }
 }

@@ -1,6 +1,9 @@
+import { EventEmitter } from '@angular/core';
 import { Receipe } from './receipe.model';
 
 export class ReceipeService {
+  public receipeSelected: EventEmitter<Receipe> = new EventEmitter<Receipe>();
+
   private receipes: Receipe[] = [
     new Receipe(
       'A Test Recipe1',

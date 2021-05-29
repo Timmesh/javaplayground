@@ -11,7 +11,11 @@ import { ReceipeService } from './receipe.service';
 export class ReceipesComponent implements OnInit {
   selectedReceipe: Receipe;
 
-  constructor() {}
+  constructor(private receipeService: ReceipeService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.receipeService.receipeSelected.subscribe(
+      (receipe: Receipe) => (this.selectedReceipe = receipe)
+    );
+  }
 }
