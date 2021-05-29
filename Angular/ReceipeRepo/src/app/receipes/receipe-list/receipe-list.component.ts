@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Receipe } from '../receipe.model';
+import { ReceipeService } from '../receipe.service';
 
 @Component({
   selector: 'app-receipe-list',
@@ -10,24 +11,15 @@ export class ReceipeListComponent implements OnInit {
   @Output() receipeSelected: EventEmitter<Receipe> =
     new EventEmitter<Receipe>();
 
-  receipes: Receipe[] = [
-    new Receipe(
-      'A Test Recipe1',
-      'This is simply a test',
-      'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg'
-    ),
-    new Receipe(
-      'A Test Recipe2',
-      'This is simply a test',
-      'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg'
-    ),
-  ];
+  receipes: Receipe[];
+
+  constructor(private receipeService: ReceipeService) {}
+
+  ngOnInit() {
+    this.receipes = this.receipeService.getRecepies();
+  }
 
   onReceipeSelected(receipe: Receipe) {
     this.receipeSelected.emit(receipe);
   }
-
-  constructor() {}
-
-  ngOnInit() {}
 }
