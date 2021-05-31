@@ -15,8 +15,19 @@ export class ShoppingListService {
     return this.ingredients.slice();
   }
 
-  addIngredients(ingredient: Ingredient) {
+  addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
+    this.ingredientsUpdated.emit(this.ingredients.slice());
+  }
+
+  addIngredients(ingredients: Ingredient[]) {
+    // This will cause emit event after each add ingredient
+    /* for (const ingredient of ingredients) {
+      this.addIngredient(ingredient);
+    } */
+    // this.ingredients.push(Ingredient[]) - This will add array as single object in array
+    // Spread operator(...) which basically turn an array of elements into list of elements
+    this.ingredients.push(...ingredients);
     this.ingredientsUpdated.emit(this.ingredients.slice());
   }
 }

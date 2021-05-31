@@ -1,7 +1,10 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
+import { ShoppingListService } from '../shopping-list/shopping-List.service';
 import { Receipe } from './receipe.model';
 
+// If we want to inject a service into a service we need to add @Injectable
+@Injectable()
 export class ReceipeService {
   public receipeSelected: EventEmitter<Receipe> = new EventEmitter<Receipe>();
 
@@ -26,7 +29,15 @@ export class ReceipeService {
     ),
   ];
 
+  constructor(private shoppingListService: ShoppingListService) {
+
+  }
+
   getRecepies() {
     return this.receipes.slice();
+  }
+
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    this.shoppingListService.addIngredients(ingredients);
   }
 }
