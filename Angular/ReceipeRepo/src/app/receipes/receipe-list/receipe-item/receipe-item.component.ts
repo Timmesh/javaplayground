@@ -9,13 +9,9 @@ import { ReceipeService } from '../../receipe.service';
 })
 export class ReceipeItemComponent implements OnInit {
   @Input() receipe: Receipe;
-  // @Output() receipeClicked: EventEmitter<void> = new EventEmitter<void>();
-  constructor(private reeeipeService: ReceipeService) {}
+
+  constructor() {}
 
   ngOnInit() {}
 
-  onSelected() {
-    // this.receipeClicked.emit();
-    this.reeeipeService.receipeSelected.emit(this.receipe);
-  }
 }
