@@ -1,0 +1,20 @@
+
+
+
+"routerLinkActive" directive helps to conditionally attach the class to element.
+
+> Child Routes: Challenge:
+The next goal is to implement child routing for our recipe routes here, so that when we click a recipe here, we actually load it by adding let's say slash and then the ID of that recipe in our recipes array here in the URL, so recipes 1 would load the first element.
+So that would be great if we could load our recipes like that and render them here then,
+so with a child router again. And the same for new recipe and edit.
+
+So the challenge is Setting up the router, creating that component which basically says please select a recipe and then loading either that component or the detail route, the detail component depending on whether we click the recipe in the list or not.
+
+> Adding Child Routing Together
+
+$ ng g c recipe-start
+
+
+
+
+
