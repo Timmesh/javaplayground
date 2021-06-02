@@ -12,9 +12,5 @@ export class AppComponent {
     console.log(environment.production); // Logs false for default environment
   }
   title = 'ReceipeRepo';
-  loadedFeature = 'receipe';
 
-  onNavigate(feature: string) {
-    this.loadedFeature = feature;
-  }
 }
