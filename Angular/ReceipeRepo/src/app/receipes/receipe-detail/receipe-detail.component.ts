@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Receipe } from '../receipe.model';
 import { ReceipeService } from '../receipe.service';
 
@@ -14,7 +14,8 @@ export class ReceipeDetailComponent implements OnInit {
 
   constructor(
     private receipeService: ReceipeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -29,5 +30,10 @@ export class ReceipeDetailComponent implements OnInit {
 
   addToShoppingList() {
     this.receipeService.addIngredientsToShoppingList(this.receipe.ingredients);
+  }
+
+  editReceipe() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+    // this.router.navigate(['../' + this.id + '/edit'], { relativeTo: this.route });
   }
 }
