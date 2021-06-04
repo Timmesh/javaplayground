@@ -1,8 +1,10 @@
 import { EventEmitter } from '@angular/core';
 import { Ingredient } from '../shared/ingredients.model';
+import {Subject} from 'rxjs'
 
 export class ShoppingListService {
-  ingredientsUpdated: EventEmitter<Ingredient[]> = new EventEmitter<Ingredient[]>();
+  // ingredientsUpdated: EventEmitter<Ingredient[]> = new EventEmitter<Ingredient[]>();
+  ingredientsUpdated: Subject<Ingredient[]> = new Subject<Ingredient[]>();
 
   private ingredients: Ingredient[] = [
     new Ingredient('Apples', 200),
@@ -17,7 +19,7 @@ export class ShoppingListService {
 
   addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
-    this.ingredientsUpdated.emit(this.ingredients.slice());
+    this.ingredientsUpdated.next(this.ingredients.slice());
   }
 
   addIngredients(ingredients: Ingredient[]) {
@@ -28,6 +30,6 @@ export class ShoppingListService {
     // this.ingredients.push(Ingredient[]) - This will add array as single object in array
     // Spread operator(...) which basically turn an array of elements into list of elements
     this.ingredients.push(...ingredients);
-    this.ingredientsUpdated.emit(this.ingredients.slice());
+    this.ingredientsUpdated.next(this.ingredients.slice());
   }
 }
