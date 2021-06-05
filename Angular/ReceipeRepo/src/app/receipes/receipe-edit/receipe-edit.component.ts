@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Params } from "@angular/router";
+import { Ingredient } from "src/app/shared/ingredients.model";
 import { ReceipeService } from "../receipe.service";
 
 @Component({
@@ -30,24 +31,45 @@ export class ReceipeEditComponent implements OnInit {
     let receipeName = "";
     let receipeImagePath = "";
     let receipeDescription: string = "";
+    let receipeIngredients = new FormArray([]);
 
     if (this.editMode) {
       const receipe = this.receipeService.getReceipe(this.id);
       receipeName = receipe.name;
       receipeImagePath = receipe.imagePath;
       receipeDescription = receipe.description;
+      if (receipe["ingredients"]) {
+        for (const ingredient of receipe.ingredients) {
+          receipeIngredients.push(
+            new FormGroup({
+              name: new FormControl(ingredient.name),
+              amount: new FormControl(ingredient.amount),
+            })
+          );
+        }
+      }
     }
     this.receipeForm = new FormGroup({
-      'name': new FormControl(receipeName),
-      'imagePath': new FormControl(receipeImagePath),
-      'description': new FormControl(receipeDescription),
+      name: new FormControl(receipeName),
+      imagePath: new FormControl(receipeImagePath),
+      description: new FormControl(receipeDescription),
+      ingredients: receipeIngredients,
     });
   }
 
   onSubmit() {
     console.log("This");
-    
+
     console.log(this.receipeForm);
-    
+  }
+
+  addIngredient() {
+    (<FormArray>this.receipeForm.get("ingredients")).push(
+      new FormGroup({ name: new FormControl(), amount: new FormControl() })
+    );
+  }
+
+  get controls() { // a getter!
+    return (<FormArray>this.receipeForm.get('ingredients')).controls;
   }
 }
