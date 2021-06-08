@@ -14,7 +14,8 @@ So the challenge is Setting up the router, creating that component which basical
 
 $ ng g c recipe-start
 
-
+> @Injectable:
+This annotaion is optional for service, if we inject service into service we need to use @injectable annotation in service
 
 
 
