@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Ingredient } from "src/app/shared/ingredients.model";
+import { Receipe } from "../receipe.model";
 import { ReceipeService } from "../receipe.service";
 
 @Component({
@@ -45,7 +46,7 @@ export class ReceipeEditComponent implements OnInit {
               name: new FormControl(ingredient.name, Validators.required),
               amount: new FormControl(ingredient.amount, [
                 Validators.required,
-                Validators.pattern(/^[1-9]+[0-9]*&/),
+                Validators.pattern(/^[1-9]+[0-9]*$/),
               ]),
             })
           );
@@ -61,9 +62,17 @@ export class ReceipeEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("This");
-
-    console.log(this.receipeForm);
+    /* const newReceipe = new Receipe(
+      this.receipeForm.get["name"],
+      this.receipeForm.get["description"],
+      this.receipeForm.get["imagePath"],
+      this.receipeForm.get["ingredients"]
+    ); */
+    if (this.editMode) {
+      this.receipeService.updateReceipe(this.id, this.receipeForm.value);
+    } else {
+      this.receipeService.addReceipe(this.receipeForm.value);
+    }
   }
 
   addIngredient() {

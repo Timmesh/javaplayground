@@ -7,6 +7,7 @@ import { Receipe } from "./receipe.model";
 // If we want to inject a service into a service we need to add @Injectable
 @Injectable()
 export class ReceipeService {
+  receipeChanged: Subject<Receipe[]> = new Subject<Receipe[]>();
 
   private receipes: Receipe[] = [
     new Receipe(
@@ -36,4 +37,15 @@ export class ReceipeService {
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
   }
+
+  addReceipe(receipe: Receipe) {
+    this.receipes.push(receipe);
+    this.receipeChanged.next(this.receipes.slice());
+  }
+
+  updateReceipe(index: number, newReceipe: Receipe) {
+    this.receipes[index] = newReceipe;
+    this.receipeChanged.next(this.receipes.slice());
+  }
+
 }

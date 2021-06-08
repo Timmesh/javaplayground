@@ -4,9 +4,9 @@ import { Receipe } from '../receipe.model';
 import { ReceipeService } from '../receipe.service';
 
 @Component({
-  selector: 'app-receipe-list',
-  templateUrl: './receipe-list.component.html',
-  styleUrls: ['./receipe-list.component.css'],
+  selector: "app-receipe-list",
+  templateUrl: "./receipe-list.component.html",
+  styleUrls: ["./receipe-list.component.css"],
 })
 export class ReceipeListComponent implements OnInit {
   @Output() receipeSelected: EventEmitter<Receipe> =
@@ -21,10 +21,13 @@ export class ReceipeListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.receipeService.receipeChanged.subscribe((receipes) => {
+      this.receipes = receipes;
+    });
     this.receipes = this.receipeService.getRecepies();
   }
 
   createNewReceipe() {
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.router.navigate(["new"], { relativeTo: this.route });
   }
 }
