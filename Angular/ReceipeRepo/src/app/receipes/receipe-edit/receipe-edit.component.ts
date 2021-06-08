@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormControl, FormGroup } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Ingredient } from "src/app/shared/ingredients.model";
 import { ReceipeService } from "../receipe.service";
@@ -42,17 +42,20 @@ export class ReceipeEditComponent implements OnInit {
         for (const ingredient of receipe.ingredients) {
           receipeIngredients.push(
             new FormGroup({
-              name: new FormControl(ingredient.name),
-              amount: new FormControl(ingredient.amount),
+              name: new FormControl(ingredient.name, Validators.required),
+              amount: new FormControl(ingredient.amount, [
+                Validators.required,
+                Validators.pattern(/^[1-9]+[0-9]*&/),
+              ]),
             })
           );
         }
       }
     }
     this.receipeForm = new FormGroup({
-      name: new FormControl(receipeName),
-      imagePath: new FormControl(receipeImagePath),
-      description: new FormControl(receipeDescription),
+      name: new FormControl(receipeName, Validators.required),
+      imagePath: new FormControl(receipeImagePath, Validators.required),
+      description: new FormControl(receipeDescription, Validators.required),
       ingredients: receipeIngredients,
     });
   }
@@ -65,11 +68,18 @@ export class ReceipeEditComponent implements OnInit {
 
   addIngredient() {
     (<FormArray>this.receipeForm.get("ingredients")).push(
-      new FormGroup({ name: new FormControl(), amount: new FormControl() })
+      new FormGroup({
+        name: new FormControl(null, Validators.required),
+        amount: new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^[1-9]+[0-9]*$/),
+        ]),
+      })
     );
   }
 
-  get controls() { // a getter!
-    return (<FormArray>this.receipeForm.get('ingredients')).controls;
+  get controls() {
+    // a getter!
+    return (<FormArray>this.receipeForm.get("ingredients")).controls;
   }
 }

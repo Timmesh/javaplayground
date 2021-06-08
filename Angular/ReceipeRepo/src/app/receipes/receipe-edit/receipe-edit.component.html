@@ -3,7 +3,7 @@
     <form [formGroup]="receipeForm" (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-xs-12">
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success" [disabled]="!receipeForm.valid">Save</button>
           <button type="button" class="btn btn-danger">Cancel</button>
         </div>
       </div>
@@ -39,8 +39,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12" formArrayName="ingredients">
-          <div class="row" *ngFor="let ingredientCtrl of controls;let i=index"
-            [formGroupName]="i"
+          <div class="row" *ngFor="let ingredientCtrl of controls;let i=index" [formGroupName]="i"
             style="margin-top: 10px;">
             <div class="col-xs-8">
               <input type="text" class="form-control" formControlName="name">
