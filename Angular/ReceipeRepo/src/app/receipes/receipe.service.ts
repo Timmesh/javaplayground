@@ -48,4 +48,9 @@ export class ReceipeService {
     this.receipeChanged.next(this.receipes.slice());
   }
 
+  deleteReceipe(index:number) {
+    this.receipes.splice(index, 1);
+    this.receipeChanged.next(this.receipes.slice());
+  }
+
 }

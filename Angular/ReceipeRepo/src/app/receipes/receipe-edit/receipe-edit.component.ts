@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Ingredient } from "src/app/shared/ingredients.model";
-import { Receipe } from "../receipe.model";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ReceipeService } from "../receipe.service";
 
 @Component({
@@ -17,7 +15,8 @@ export class ReceipeEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private receipeService: ReceipeService
+    private receipeService: ReceipeService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -73,6 +72,7 @@ export class ReceipeEditComponent implements OnInit {
     } else {
       this.receipeService.addReceipe(this.receipeForm.value);
     }
+    this.onCancel();
   }
 
   addIngredient() {
@@ -85,6 +85,10 @@ export class ReceipeEditComponent implements OnInit {
         ]),
       })
     );
+  }
+
+  onCancel(){
+    this.router.navigate(['../'], {relativeTo: this.route});
   }
 
   get controls() {
