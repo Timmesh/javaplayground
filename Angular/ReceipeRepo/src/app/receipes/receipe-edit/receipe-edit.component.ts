@@ -91,6 +91,10 @@ export class ReceipeEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
+  onDeleteIngredient(index: number) {
+    (<FormArray>this.receipeForm.get('ingredients')).removeAt(index);
+  }
+
   get controls() {
     // a getter!
     return (<FormArray>this.receipeForm.get("ingredients")).controls;

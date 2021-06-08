@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Receipe } from '../receipe.model';
 import { ReceipeService } from '../receipe.service';
 
@@ -8,11 +9,9 @@ import { ReceipeService } from '../receipe.service';
   templateUrl: "./receipe-list.component.html",
   styleUrls: ["./receipe-list.component.css"],
 })
-export class ReceipeListComponent implements OnInit {
-  @Output() receipeSelected: EventEmitter<Receipe> =
-    new EventEmitter<Receipe>();
-
+export class ReceipeListComponent implements OnInit, OnDestroy {
   receipes: Receipe[];
+  subscription: Subscription;
 
   constructor(
     private receipeService: ReceipeService,
@@ -21,7 +20,7 @@ export class ReceipeListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.receipeService.receipeChanged.subscribe((receipes) => {
+    this.subscription = this.receipeService.receipeChanged.subscribe((receipes) => {
       this.receipes = receipes;
     });
     this.receipes = this.receipeService.getRecepies();
@@ -29,5 +28,9 @@ export class ReceipeListComponent implements OnInit {
 
   createNewReceipe() {
     this.router.navigate(["new"], { relativeTo: this.route });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
