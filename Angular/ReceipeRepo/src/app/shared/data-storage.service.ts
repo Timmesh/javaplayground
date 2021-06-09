@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Receipe } from "../receipes/receipe.model";
 import { ReceipeService } from "../receipes/receipe.service";
-
+import { map } from "rxjs/operators";
 @Injectable({ providedIn: "root" })
 export class DataStorageService {
   constructor(
@@ -24,6 +24,16 @@ export class DataStorageService {
     this.httpClient
       .get<Receipe[]>(
         "https://receiperepo-default-rtdb.firebaseio.com/receipe.json"
+      )
+      .pipe(
+        map((receipes) => {
+          receipes.map((receipe) => {
+            return {
+              ...receipes,
+              ingredients: receipe.ingredients ? receipe.ingredients : [],
+            };
+          });
+        })
       )
       .subscribe((res) => {
         this.receipeService.setRecepies(res);
