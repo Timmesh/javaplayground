@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { Subject, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { User } from "./user.model";
 
 export interface AuthResponseData {
   idToken: string;
@@ -14,6 +15,8 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
+  user: Subject<User> = new Subject<User>();
+
   constructor(private httpClient: HttpClient) {}
 
   signUp(email: string, password: string) {
@@ -26,7 +29,17 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(this.handleError),
+        tap((responseData) => {
+          this.handleAuthentication(
+            responseData.email,
+            responseData.localId,
+            responseData.idToken,
+            +responseData.expiresIn
+          );
+        })
+      );
   }
 
   login(email: string, password: string) {
@@ -39,10 +52,31 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(this.handleError),
+        tap((responseData) => {
+          this.handleAuthentication(
+            responseData.email,
+            responseData.localId,
+            responseData.idToken,
+            +responseData.expiresIn
+          );
+        })
+      );
   }
 
-  handleError(errorResponse: HttpErrorResponse) {
+  private handleAuthentication(
+    email: string,
+    localId: string,
+    idToken: string,
+    expiresIn: number
+  ) {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, localId, idToken, expirationDate);
+    this.user.next(user);
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
     let errorMessage = "An Unknown error occured";
     if (!errorResponse.error || !errorResponse.error.error) {
       return throwError(errorMessage);
