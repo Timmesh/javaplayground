@@ -23,27 +23,22 @@ export class DataStorageService {
   }
 
   fetchReceipes() {
-    return this.authService.user.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.httpClient.get<Receipe[]>(
-          "https://receiperepo-default-rtdb.firebaseio.com/receipe.json",
-          {
-            params: new HttpParams().set('auth', user.token)
-          }
-        );
-      }),
-      map((receipes) => {
-        return receipes.map((receipe) => {
-          return {
-            ...receipe,
-            ingredients: receipe.ingredients ? receipe.ingredients : [],
-          };
-        });
-      }),
-      tap((receipes) => {
-        this.receipeService.setRecepies(receipes);
-      })
-    );
+    return this.httpClient
+      .get<Receipe[]>(
+        "https://receiperepo-default-rtdb.firebaseio.com/receipe.json"
+      )
+      .pipe(
+        map((receipes) => {
+          return receipes.map((receipe) => {
+            return {
+              ...receipe,
+              ingredients: receipe.ingredients ? receipe.ingredients : [],
+            };
+          });
+        }),
+        tap((receipes) => {
+          this.receipeService.setRecepies(receipes);
+        })
+      );
   }
 }
